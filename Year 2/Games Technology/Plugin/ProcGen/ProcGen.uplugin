@@ -1,0 +1,23 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "ProcGen",
+	"Description": "A 3D procedural terrain generation tool",
+	"Category": "Other",
+	"CreatedBy": "Luke Barnes",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"EngineVersion": "5.2.0",
+	"CanContainContent": false,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "ProcGen",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		}
+	]
+}
