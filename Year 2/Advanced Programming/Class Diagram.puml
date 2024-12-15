@@ -1,0 +1,89 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+' Client Package
+package client <<frame>> {
+    class Client {
+        -Socket socket
+        -boolean running
+        +Client(String address, int port)
+        -ResponseHandler()
+        +main(String[] args)
+    }
+
+    class ResponseHandler implements Runnable{
+        -DateTimeFormatter formatter
+        -ExceptionHandler handler
+        -BufferedReader reader
+        +ResponseHandler()
+        +run()
+    }
+
+    class Server {
+        -boolean serverRunning
+        -Map<String, CustomTuple> clients
+        +Server(int port)
+        -ClientHandler()
+    }
+
+    class ClientHandler implements Runnable {
+        -Socket socket
+        -String clientName
+        -PrintWriter writer
+        -BufferedReader reader
+        -boolean coordinator
+        -boolean running
+        -ClientHandler(Socket socket)
+        +void run()
+        -void handleClientMessage(String message)
+        -void sendClientList()
+        -void sendMessageToClient(String recipient, String message)
+        -void sendBroadcastMessage(String message)
+        -void clientExit()
+        -void kickClient(String clientName)
+        -void sendCoordinator()
+        -void pickRandomCoordinator()
+    }
+}
+
+' Tools Package
+package tools <<frame>> {
+    class CustomTuple {
+        -String clientName
+        -BufferedReader  clientReader
+        -PrintWriter clientWriter
+        -InetAddress clientIP
+        -int clientPort
+        -Socket clientSocket
+        -boolean isCoordinator
+        +CustomTuple(String clientName, BufferedReader clientReader, PrintWriter clientWriter, InetAddress clientIP,
+                    int clientPort, Socket clientSocket, boolean isCoordinator)
+        +String getName()
+        +BufferedReader getBufferedReader()
+        +PrintWriter getPrintWriter()
+        +InetAddress getInetAddress()
+        +int getPort()
+        +Socket getSocket()
+        +boolean getCoordinator()
+        +void setCoordinator()
+    }
+
+    class ExceptionHandler {
+        -Logger logger
+        +void ioHandler(IOException error)
+        +void unknownHandler(UnknownHostException error)
+        +void infoHandler(String message)
+    }
+}
+
+' Dependencies
+Client --> ExceptionHandler
+Client --> "1" ResponseHandler
+ResponseHandler --> ExceptionHandler
+Server --> ExceptionHandler
+Server --> "1" ClientHandler
+ClientHandler --> ExceptionHandler
+ClientHandler --> CustomTuple
+CustomTuple --> ExceptionHandler
+
+@enduml
